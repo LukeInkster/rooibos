@@ -23,6 +23,7 @@ Image == 1.4.0
 Pillow == 2.9.0
 python-memcached==1.54
 Werkzeug==0.10.4
+IPTCInfo == 1.9.5-6
 #
 # development libraries
 #
