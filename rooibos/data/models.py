@@ -416,6 +416,7 @@ class FieldSet(models.Model):
 
     class Meta:
         ordering = ['title']
+        db_table = 'data_fieldset'
 
     @staticmethod
     def for_user(user):

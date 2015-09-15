@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS rooibos;
+
 CREATE DATABASE IF NOT EXISTS rooibos CHARACTER SET utf8;
 GRANT ALL PRIVILEGES ON rooibos.* TO rooibos@localhost IDENTIFIED BY 'rooibos';
 UPDATE mysql.user SET
@@ -5,5 +7,4 @@ UPDATE mysql.user SET
     Create_priv='Y', Drop_priv='Y', Index_priv='Y', Alter_priv='y'
     WHERE Host='localhost' AND User='rooibos';
 FLUSH PRIVILEGES;
-
 

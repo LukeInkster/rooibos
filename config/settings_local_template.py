@@ -62,6 +62,16 @@ if uname()[1] == 'vagrant-ubuntu-trusty-64' and exists('/vagrant'):
     DATABASE_PORT = '3306'
     FFMPEG_EXECUTABLE = '/usr/local/bin/ffmpeg'
 
+    import shlex
+    import subprocess
+    route_n = subprocess.Popen(shlex.split('route -n'), stdout=subprocess.PIPE)
+    r_out = route_n.stdout.read()
+    if r_out.split()[13] != '0.0.0.0':
+        INTERNAL_IPS = ('127.0.0.1', 'localhost', r_out.split()[13])
+    else:
+        INTERNAL_IPS = ('127.0.0.1', 'localhost')
+    print 'Running via Vagrant, setting INTERNAL_IPS = %s' % str(INTERNAL_IPS)
+
 # examples of specifying other environments
 elif uname()[0] == 'Linux' and LOCAL_HOSTNAME == 'mdid3' and exists('/var/local/mdid-storage'):
     print('Starting with deployment settings')
@@ -186,14 +196,21 @@ MANAGERS = ADMINS
 # see debug comments, when DEBUG is True
 # debug_toolbar (if installed) will act as if debug=true
 
-## if the vagrant bootstrap.sh runs, VAGRANT_GATEWAY will be changed
+# CLIP_APP_* governs the names of apps that begin 'mdid-` that are installed in rooibos/apps
+# e.g.
+CLIP_APP_NAMES = True
+CLIP_APP_ONE = 'mdid-'
+CLIP_APP_STRINGS = ('mdid-',)
+
+# if the vagrant bootstrap.sh runs, VAGRANT_GATEWAY will be changed
 VAGRANT_GATEWAY = '<<GATEWAY_IP>>'
 
-## if VAGRANT_GATEWAY doesn't start with << anymore, add it to INTERNAL_IPS
+# if VAGRANT_GATEWAY doesn't start with << anymore, add it to INTERNAL_IPS
 if VAGRANT_GATEWAY[:2] == '<<':
     INTERNAL_IPS = ('127.0.0.1', 'localhost')
 else:
     INTERNAL_IPS = ('127.0.0.1', 'localhost', VAGRANT_GATEWAY)
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

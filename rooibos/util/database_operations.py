@@ -1,3 +1,5 @@
+from django.db import connection
+
 def quote_db_name(name):
     """
     make sure a db/table/field name is quoted with backticks
@@ -17,3 +19,7 @@ def col(model, field):
     :return: a string in the format Model.Field, e.g.: `util_ownedwrapper`.`object_id`
     """
     return '%s.%s' % (quote_db_name(model._meta.db_table), quote_db_name(model._meta.get_field(field).column))
+
+
+def db_table_exists(table_name):
+    return table_name in connection.introspection.table_names()
